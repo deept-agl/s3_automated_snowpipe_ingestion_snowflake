@@ -1,0 +1,14 @@
+-- Destructive cleanup: run only when finished with this isolated demo project.
+USE ROLE ACCOUNTADMIN;
+DROP PIPE IF EXISTS EARTHQUAKE_DB.BRONZE.USGS_EARTHQUAKE_PIPE;
+DROP VIEW IF EXISTS EARTHQUAKE_DB.BRONZE.EARTHQUAKES_LATEST;
+DROP STAGE IF EXISTS EARTHQUAKE_DB.BRONZE.USGS_S3_STAGE;
+DROP FILE FORMAT IF EXISTS EARTHQUAKE_DB.BRONZE.USGS_JSONL_FORMAT;
+DROP TABLE IF EXISTS EARTHQUAKE_DB.BRONZE.EARTHQUAKES_RAW;
+-- No tasks, streams or procedures are created in this Snowpipe build.
+DROP SCHEMA IF EXISTS EARTHQUAKE_DB.BRONZE;
+DROP DATABASE IF EXISTS EARTHQUAKE_DB;
+-- The integration is project-specific; only drop if no other stage references it.
+DROP STORAGE INTEGRATION IF EXISTS S3_EARTHQUAKE_INT;
+DROP WAREHOUSE IF EXISTS WH_EARTHQUAKE_INGEST;
+-- In AWS: separately delete the S3 notification, objects, bucket (if disposable), role and policies.

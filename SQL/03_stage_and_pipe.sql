@@ -1,0 +1,26 @@
+USE ROLE ACCOUNTADMIN;
+USE DATABASE EARTHQUAKE_DB;
+USE SCHEMA BRONZE;
+
+CREATE STAGE IF NOT EXISTS USGS_S3_STAGE
+ URL = 's3://<YOUR_BUCKET_NAME>/earthquakes/incoming/'
+ STORAGE_INTEGRATION = S3_EARTHQUAKE_INT
+ FILE_FORMAT = USGS_JSONL_FORMAT;
+
+--Validate if you integration is working, if this throws error, validate if you have replaced with correct external id and arn role.
+LIST @USGS_S3_STAGE;
+
+-- Pipe is created before configuring the S3 notification; avoid uploading files yet.
+CREATE PIPE IF NOT EXISTS USGS_EARTHQUAKE_PIPE
+ AUTO_INGEST = TRUE
+AS
+COPY INTO EARTHQUAKE_DB.BRONZE.EARTHQUAKES_RAW (EVENT_DATA, SOURCE_FILE)
+FROM (
+ SELECT $1, METADATA$FILENAME
+ FROM @EARTHQUAKE_DB.BRONZE.USGS_S3_STAGE
+)
+FILE_FORMAT = (FORMAT_NAME = EARTHQUAKE_DB.BRONZE.USGS_JSONL_FORMAT)
+ON_ERROR = SKIP_FILE;
+
+DESC PIPE USGS_EARTHQUAKE_PIPE;
+-- Configure S3 event notification with this pipe's notification_channel SQS ARN.

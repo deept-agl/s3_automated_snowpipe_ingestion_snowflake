@@ -1,3 +1,0 @@
-{"type":"Feature","id":"nc75415277","properties":{"mag":0.42,"place":"11 km WNW of The Geysers, CA","time":1786387025210,"type":"earthquake","status":"automatic"},"geometry":{"type":"Point","coordinates":[-122.87516784668,38.7971649169922,2.5]}}
-{"type":"Feature","id":"aka2026ptqbvk","properties":{"mag":1.5,"place":"41 km WNW of Anchor Point, Alaska","time":1786386997928,"type":"earthquake","status":"automatic"},"geometry":{"type":"Point","coordinates":[-152.53,59.91,89.4]}}
-{"type":"Feature","id":"ci40669970","properties":{"mag":1.05,"place":"8 km NE of Coso Junction, CA","time":1786385742880,"type":"earthquake","status":"automatic"},"geometry":{"type":"Point","coordinates":[-117.884166666667,36.0923333333333,4.01]}}
